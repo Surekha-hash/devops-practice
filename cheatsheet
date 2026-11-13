@@ -1,1 +1,28 @@
+jenkins installation:
+-------------------------
+install java
+systemctl status jenkins
+systemctl start jenkins
+systemctl enable jenkins
 
+systemctl restart jenkins
+
+/var/lib/jenkins/initialAdminPassword
+
+plugins -- to integrate with different tools
+
+jenkins integration with git
+----------------------------
+public repo ayte credentials avasaramledu, private repo ki kavali
+
+github credentials ichetapudu username with pwd option select cheste pwd ivalsindi pwd kadu token created in github
+
+git lo changes cheste avi directga pipeloki vastaya ravu, build cheste pipeline ki vastay --idi manual process, automatic ga jaragalante webhooks tho integrate cheyali
+webhook anedi git repo settings lo chudali not on github account settings --> ipudu git branch lo changes cheyagane pipeline build avtadi
+
+pollSCM, build periodically
+
+CRON
+
+* * * * *
+min, hours, date, month, day in a week( sun=0, mon=1, tue,=2 ..)
