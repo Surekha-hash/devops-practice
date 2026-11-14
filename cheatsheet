@@ -51,4 +51,9 @@ https://github.com/devops0014/docker-webapp-k8s.git
 sonarqube default credentials is admin, admin
 sonar, dockerhub credentials jenkins credentials option lo save cheyali
 
+------------------------------
+k8's cluster creation
+aws s3 ls
+export KOPS_STATE_STORE=s3://mycluster-kops-1
+kops create cluster --name=surekha.k8s.local --zones=ap-south-2a,ap-south-2b --control-plane-count=1 --control-plane-size=c7i-flex.large --control-plane-volume-size=30 --node-count=2 --node-size=c7i-flex.large --node-volume-size=20
 
