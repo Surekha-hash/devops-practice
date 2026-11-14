@@ -26,3 +26,29 @@ CRON
 
 * * * * *
 min, hours, date, month, day in a week( sun=0, mon=1, tue,=2 ..)
+
+--------------------
+git branching stategies
+----------------------
+feature branching strategy --  without directly working on main branch, for every new feature, we create new branch and code, test and then raise pull request to merge it into the mail branch
+gitflow  --- here multiple branches will be there like master, develop, release, hot-fix, feature ala vuntundi. idi big projects ki use chestaru
+trunk based --- devlopers direcly work on master branch with small updates, or changes
+
+dokcer container exit codes:-
+------------------------
+0 - clean success
+1 - geenral application error
+137 - out of memory error
+127 - cmd not found
+
+docker system df
+docker system prune
+docker inspect
+docker 
+---------------------------------------------
+k8s project
+https://github.com/devops0014/docker-webapp-k8s.git
+sonarqube default credentials is admin, admin
+sonar, dockerhub credentials jenkins credentials option lo save cheyali
+
+
