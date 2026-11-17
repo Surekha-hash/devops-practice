@@ -57,3 +57,34 @@ aws s3 ls
 export KOPS_STATE_STORE=s3://mycluster-kops-1
 kops create cluster --name=surekha.k8s.local --zones=ap-south-2a,ap-south-2b --control-plane-count=1 --control-plane-size=c7i-flex.large --control-plane-volume-size=30 --node-count=2 --node-size=c7i-flex.large --node-volume-size=20
 
+------------------
+terraform
+----------------
+terraform
+ init
+apply
+plan
+destroy
+workspace list
+workspace delete workspace-name
+workspace select workspace-name
+workspace new workspace-name
+validate
+fmt
+
+to call any resource in the file, we call it like resoucetype.resourcename.id
+
+backend configure cheste malli terraform init cmd run cheyali apude ah statefile ah backend lo store cheyala vadda ani adugutadi
+
+terraform state list 
+use_lockfile = true --> to lock the state file to avoid multiple users edits the files
+
+
+drift ante manual ga changes cheyadam, adi ela telustundante terraform plan cmd tho chupistundi. clodu lo and statefile lo compare chestundi then difference ento telustadi danne drift antaru
+to resolve drift, manam terraform apply cheyali then adi revert chaestundi changes ni
+ade ah changes ye continue cheyalante same changes resource file lo update chesi terraform apply cheyali 
+
+
+
+
+
