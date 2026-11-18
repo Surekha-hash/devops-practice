@@ -83,6 +83,120 @@ use_lockfile = true --> to lock the state file to avoid multiple users edits the
 drift ante manual ga changes cheyadam, adi ela telustundante terraform plan cmd tho chupistundi. clodu lo and statefile lo compare chestundi then difference ento telustadi danne drift antaru
 to resolve drift, manam terraform apply cheyali then adi revert chaestundi changes ni
 ade ah changes ye continue cheyalante same changes resource file lo update chesi terraform apply cheyali 
+remote statefile storing valla advantages:
+• State Locking: Ensures that only one user can modify the state at a time. 
+• State Encryption: Protects sensitive data within the state file by encrypting it. 
+• Versioning: Remote storage like S3 can version state files, allowing you to recover previous 
+versions in case of accidental changes or corruption.
+
+resource life cycle management :
+• create_before_destroy: Ensures that a new resource is created before the old resource is 
+destroyed. 
+• prevent_destroy: Prevents Terraform from destroying a resource. 
+• ignore_changes: Tells Terraform to ignore specific changes to resource attributes. 
+inside resource bloc, write like this,
+lifecycle { 
+create_before_destroy = true 
+}
+
+Provisioners allow you to execute scripts or commands on the resource after it has been created. inside resoucr bloc, write like this
+provisioner "remote-exec" { 
+inline = [ 
+"sudo apt-get update", 
+"sudo apt-get install -y nginx" 
+] 
+} 
+connection { 
+type        
+user       
+= "ssh" 
+ = "ubuntu" 
+private_key = file("~/.ssh/id_rsa") 
+host        
+= self.public_ip 
+}
+
+
+Terraform automatically manages the dependencies between resources. It understands that certain 
+resources depend on others, and it ensures that resources are created in the correct order
+
+Example: Creating a VPC and an EC2 instance that depends on the VPC: 
+resource "aws_vpc" "my_vpc" { 
+cidr_block = "10.0.0.0/16" 
+} 
+resource "aws_instance" "my_instance" { 
+ami           
+= "ami-0c55b159cbfafe1f0" 
+instance_type = "t2.micro" 
+subnet_id     = aws_vpc.my_vpc.id  # EC2 instance depends on VPC 
+} 
+In this example, the EC2 instance will not be created until the VPC has been successfully provisioned.
+
+If you need to interact with multiple accounts or regions within the same provider, you can use 
+provider aliases. For example, you may want to manage resources in multiple AWS regions. 
+Here’s how you can define provider aliases for AWS: 
+# Default AWS Provider (us-west-1) 
+provider "aws" { 
+region = "us-west-1" 
+} 
+# Additional AWS Provider (us-east-1) using an alias 
+provider "aws" { 
+alias  = "us_east" 
+region = "us-east-1" 
+} 
+# Resource in default region (us-west-1) 
+resource "aws_instance" "west_instance" { 
+ami           
+= "ami-0c55b159cbfafe1f0" 
+instance_type = "t2.micro" 
+} 
+# Resource in additional region (us-east-1) 
+resource "aws_instance" "east_instance" { 
+provider      
+= aws.us_east 
+ami           
+= "ami-0c55b159cbfafe1f0" 
+instance_type = "t2.micro" 
+} 
+In this example, the provider block with the alias "us_east" configures a second AWS provider for the 
+us-east-1 region, while the default provider uses us-west-1. The EC2 instance east_instance is 
+created in the us-east-1 region by referencing the aliased provider.
+
+ Variable :-
+attributes: 
+• default: The default value of the variable. 
+• type: The type of the variable (e.g., string, list, map, boolean). 
+• description: A brief description of what the variable represents. 
+• sensitive: Marks the variable as sensitive, ensuring it is not displayed in logs or outputs. (sensitive = true)
+Passing Variables to Terraform:-
+1. Default Values: If no value is provided, Terraform will use the default value defined in the variable block. 
+2. Command Line Flags: You can pass variables directly through the terraform apply or terraform plan command using the -var flag.
+terraform apply -var="aws_region=us-east-1" 
+3. Environment Variables: Variables can be set using environment variables. For example, to pass the AWS region, you can use: 
+export TF_VAR_aws_region=us-east-1 
+terraform apply 
+4. Terraform .tfvars Files: Variables can be defined in a separate .tfvars file and passed to Terraform during runtime.
+Example of a terraform.tfvars file: 
+aws_region = "us-east-1" 
+instance_type = "t2.medium"
+terraform apply -var-file="terraform.tfvars"
+
+a. Enabling Debug Logs 
+Terraform allows you to enable detailed logging to help with debugging. You can set the TF_LOG 
+environment variable to DEBUG to enable debug logs. 
+Example: 
+export TF_LOG=DEBUG 
+terraform apply 
+
+c. Debugging Resource Dependencies 
+Terraform automatically manages resource dependencies, ensuring that resources are created, 
+modified, or destroyed in the correct order. However, if you suspect a dependency issue, you can use 
+terraform graph to visualize the resource graph. 
+Example: 
+terraform graph | dot -Tsvg > graph.svg 
+This command generates a graph of dependencies between resources, which can help you identify 
+issues related to resource ordering or dependencies. 
+
 
 
 
