@@ -71,6 +71,7 @@ workspace select workspace-name
 workspace new workspace-name
 validate
 fmt
+terraform apply --auto-approve --var-file=test.tfvar  --> to run each var file in each workspace like dev.tfvar for dev, same like test, prod
 
 to call any resource in the file, we call it like resoucetype.resourcename.id
 
